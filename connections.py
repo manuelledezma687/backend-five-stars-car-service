@@ -1,19 +1,16 @@
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-# from sqlalchemy import create_engine
-# from sqlalchemy.ext.declarative import declarative_base
-# from sqlalchemy.orm import sessionmaker
+SQLALCHEMY_DATABASE_URL = os.environ.get('DATABASE_URL')
 
-# DATABASE_URL = "mysql+mysqlconnector://root:password@0.0.0.0:5000/fivestars"
+if SQLALCHEMY_DATABASE_URL.startswith('postgres://'):
+    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace('postgres://','postgresql://',1)
 
-# engine = create_engine(DATABASE_URL)
 
-# SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=engine)
+engine = create_engine(DATABASE_URL)
 
-# Base = declarative_base()
+SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=engine)
 
-from curses import meta
-from sqlalchemy import create_engine, MetaData
-
-engine = create_engine("mysql+mysqlconnector://admin:password@localhost:3306/fivestars"")
-
-meta_data = MetaData()
+Base = declarative_base()
