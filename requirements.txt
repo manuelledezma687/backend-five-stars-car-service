@@ -24,7 +24,9 @@ mysql-connector-python==8.0.30
 mysqlclient==2.1.1
 orjson==3.8.0
 protobuf==3.20.1
+py-mysql==1.0
 pydantic==1.9.2
+PyMySQL==1.0.2
 python-dotenv==0.20.0
 python-multipart==0.0.5
 PyYAML==6.0
