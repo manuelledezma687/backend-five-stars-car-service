@@ -31,10 +31,8 @@ def get_db():
 def show_booking(booking_id:int = Path(...,gt=0),db:Session=Depends(get_db)):
     """
     ## This path operation shows a valid booking in the app.
-
     **- Parameters:** 
     - booking_id: int
-
     **Returns a json with a valid booking in the app, with the following keys:**
     - type_of_travel: str
     - pick_up_location: str
@@ -45,6 +43,8 @@ def show_booking(booking_id:int = Path(...,gt=0),db:Session=Depends(get_db)):
     - email : EmailStr
     - observations : str
     - payment_method : str
+    - hour: str
+    - date: str
     - amount_of_booking: float
     - created_at: datetime Field
                
@@ -66,16 +66,11 @@ def show_booking(booking_id:int = Path(...,gt=0),db:Session=Depends(get_db)):
     summary="Show All Bookings",
     tags=["Bookings"])
 def show_bookings(db:Session=Depends(get_db), 
-                  user_id: int = Query(default=1), 
-                  amount_of_booking: int = Query(default=0),
-                  destiny: str = Query(default="Miami"),
                   skip: int = Query(default=0) , limit: Union[int, None] = None):
     """
     ## This path operation shows all bookings in the app.
-
     **- Parameters:** 
     -
-
     **Returns a json list with all bookings in the app, with the following keys:**
     - type_of_travel: str
     - pick_up_location: str
@@ -86,6 +81,8 @@ def show_bookings(db:Session=Depends(get_db),
     - email : EmailStr
     - observations : str
     - payment_method : str
+    - hour: str
+    - date: str
     - amount_of_booking: float
     - created_at: datetime Field
                 
@@ -102,13 +99,10 @@ def show_bookings(db:Session=Depends(get_db),
 def post_booking(entry_point:Bookings,db:Session=Depends(get_db)):
     """
     ## This path operation post a booking in the app.
-
     **- Parameters:**
     - booking: Bookings
-
     **Returns a json body with a message:** 
     - message: "Booking Saved successfully"
-
     """
     try:
         booking = models.Bookings(type_of_travel = entry_point.type_of_travel,
@@ -120,7 +114,8 @@ def post_booking(entry_point:Bookings,db:Session=Depends(get_db)):
                                   email = entry_point.email,
                                   observations = entry_point.observations,
                                   payment_method = entry_point.payment_method,
-                                  amount_of_booking = entry_point.amount_of_booking,
+                                  date = entry_point.date,
+                                  hour = entry_point.hour,
                                   created_at =entry_point.created_at)
         db.add(booking)
         db.commit()
@@ -138,13 +133,10 @@ def post_booking(entry_point:Bookings,db:Session=Depends(get_db)):
 def delete_booking(booking_id:int= Path(...,gt=0),db:Session=Depends(get_db)):
     """
     ## This path operation delete a booking in the app.
-
     **- Parameters:**
     - booking_id: int
-
     **Returns a json body with a message:** 
     - message: "Booking Deleted"
-
     """
     try:
         booking = db.query(models.Bookings).filter_by(booking_id=booking_id).first()
